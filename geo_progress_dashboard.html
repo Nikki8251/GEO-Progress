@@ -1,0 +1,438 @@
+
+<h2 class="sr-only">ZERO Markets GEO 数据追踪 Dashboard — AI 平台引用分析</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.dash { padding: 1.5rem 0; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.875rem 1rem; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.metric-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.tabs { display: flex; gap: 4px; margin-bottom: 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 0; }
+.tab { font-size: 13px; padding: 6px 14px; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; margin-bottom: -0.5px; }
+.tab.active { color: var(--color-text-primary); border-bottom-color: var(--color-text-primary); font-weight: 500; }
+.panel { display: none; }
+.panel.active { display: block; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 0.875rem; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.bar-label { font-size: 12px; color: var(--color-text-secondary); min-width: 72px; text-align: right; }
+.bar-track { flex: 1; height: 8px; background: var(--color-background-secondary); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-val { font-size: 12px; color: var(--color-text-secondary); min-width: 32px; }
+.q-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.q-table th { text-align: left; color: var(--color-text-tertiary); font-weight: 500; padding: 0 6px 6px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.q-table td { padding: 7px 6px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-secondary); vertical-align: middle; }
+.q-table tr:last-child td { border-bottom: none; }
+.q-table td:first-child { color: var(--color-text-primary); font-size: 11px; max-width: 200px; }
+.badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+.badge-y { background: #EAF3DE; color: #3B6D11; }
+.badge-n { background: #FCEBEB; color: #A32D2D; }
+.badge-pos { background: #EAF3DE; color: #3B6D11; }
+.badge-neu { background: #FAEEDA; color: #854F0B; }
+.badge-neg { background: #FCEBEB; color: #A32D2D; }
+.badge-na { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+.platform-icon { font-size: 16px; margin-right: 4px; }
+.filter-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+.filter-row label { font-size: 12px; color: var(--color-text-secondary); }
+.filter-row select { font-size: 12px; padding: 4px 8px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); }
+.heatmap { display: grid; grid-template-columns: 140px repeat(3, 1fr); gap: 3px; font-size: 11px; }
+.hm-header { text-align: center; color: var(--color-text-tertiary); font-weight: 500; padding: 4px 0; }
+.hm-label { color: var(--color-text-secondary); padding: 4px 4px; display: flex; align-items: center; font-size: 11px; line-height: 1.3; }
+.hm-cell { border-radius: 4px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+.hm-cell:hover { opacity: 0.8; }
+.hm-y { background: #C0DD97; color: #27500A; }
+.hm-n { background: #F7C1C1; color: #791F1F; }
+.hm-empty { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+.source-list { list-style: none; }
+.source-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 12px; }
+.source-item:last-child { border-bottom: none; }
+.source-domain { color: var(--color-text-primary); font-weight: 500; min-width: 120px; }
+.source-count { font-size: 11px; color: var(--color-text-tertiary); }
+.donut-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 0.75rem; }
+.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 12px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.stat-row:last-child { border-bottom: none; }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 5px; }
+.action-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 8px; background: var(--color-background-secondary); color: var(--color-text-secondary); margin: 2px 2px 0 0; }
+.chart-area { position: relative; width: 100%; height: 180px; }
+</style>
+
+<div class="dash">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.25rem;">
+    <div>
+      <div style="font-size:18px; font-weight:500; color:var(--color-text-primary);">ZERO Markets · GEO 追踪</div>
+      <div style="font-size:12px; color:var(--color-text-tertiary); margin-top:2px;">AI 平台引用分析 — 5月数据</div>
+    </div>
+    <div style="font-size:11px; color:var(--color-text-tertiary);">ChatGPT · Perplexity · Gemini</div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">测试问题总数</div>
+      <div class="metric-val">48</div>
+      <div class="metric-sub">P0×18 · P1×12 · P2×18</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">P0 引用率</div>
+      <div class="metric-val" id="m-p0">89%</div>
+      <div class="metric-sub">三平台平均</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">品牌情感</div>
+      <div class="metric-val">中立为主</div>
+      <div class="metric-sub">正面↑ 负面待清理</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">待优化问题</div>
+      <div class="metric-val" id="m-gap">11</div>
+      <div class="metric-sub">P2未引用项</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview')">总览</button>
+    <button class="tab" onclick="switchTab('heatmap')">引用热图</button>
+    <button class="tab" onclick="switchTab('questions')">问题明细</button>
+    <button class="tab" onclick="switchTab('sources')">引用来源</button>
+  </div>
+
+  <div id="panel-overview" class="panel active">
+    <div class="grid2" style="margin-bottom:12px;">
+      <div class="card">
+        <div class="card-title">各平台 P0 引用率</div>
+        <div class="bar-row" style="margin-top:4px;">
+          <div class="bar-label">ChatGPT</div>
+          <div class="bar-track"><div class="bar-fill" style="width:83%; background:#378ADD;"></div></div>
+          <div class="bar-val">83%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Perplexity</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%; background:#1D9E75;"></div></div>
+          <div class="bar-val">100%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Gemini</div>
+          <div class="bar-track"><div class="bar-fill" style="width:83%; background:#EF9F27;"></div></div>
+          <div class="bar-val">83%</div>
+        </div>
+        <div style="margin-top:10px; padding-top:10px; border-top:0.5px solid var(--color-border-tertiary); font-size:11px; color:var(--color-text-tertiary);">基于5月已测 P0 品牌直搜问题（6题×3平台）</div>
+      </div>
+      <div class="card">
+        <div class="card-title">情感分布（P0 已引用）</div>
+        <div class="stat-row"><span><span class="legend-dot" style="background:#639922;"></span>正面</span><span style="font-weight:500;">4 条</span></div>
+        <div class="stat-row"><span><span class="legend-dot" style="background:#BA7517;"></span>中立</span><span style="font-weight:500;">11 条</span></div>
+        <div class="stat-row"><span><span class="legend-dot" style="background:#E24B4A;"></span>负面</span><span style="font-weight:500;">0 条</span></div>
+        <div class="stat-row"><span><span class="legend-dot" style="background:var(--color-border-tertiary);"></span>留空/未测</span><span style="font-weight:500;">3 条</span></div>
+        <div style="margin-top:10px; padding-top:10px; border-top:0.5px solid var(--color-border-tertiary); font-size:11px; color:var(--color-text-tertiary);">中立占主导，需增加正面内容投入</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">P2 专项搜索缺口（未被引用）</div>
+        <div class="bar-row" style="margin-top:4px;">
+          <div class="bar-label" style="min-width:110px; font-size:11px;">低点差经纪商</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%; background:#F09595;"></div></div>
+          <div class="bar-val">3/3</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:110px; font-size:11px;">低入金CFD</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%; background:#F09595;"></div></div>
+          <div class="bar-val">3/3</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:110px; font-size:11px;">剥头皮经纪商</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%; background:#F09595;"></div></div>
+          <div class="bar-val">3/3</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:110px; font-size:11px;">ASIC监管列表</div>
+          <div class="bar-track"><div class="bar-fill" style="width:33%; background:#FAC775;"></div></div>
+          <div class="bar-val">1/3</div>
+        </div>
+        <div style="font-size:11px; color:var(--color-text-tertiary); margin-top:8px;">数字为"未被引用平台数"</div>
+      </div>
+      <div class="card">
+        <div class="card-title">关键优化行动</div>
+        <div style="font-size:12px; color:var(--color-text-secondary);">
+          <div style="padding:5px 0; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; gap:6px; align-items:flex-start;">
+            <i class="ti ti-alert-triangle" style="font-size:14px; color:#BA7517; margin-top:1px;" aria-hidden="true"></i>
+            <span>WikiFX / FPA 负面评价需主动回复或申请下架</span>
+          </div>
+          <div style="padding:5px 0; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; gap:6px; align-items:flex-start;">
+            <i class="ti ti-file-text" style="font-size:14px; color:#378ADD; margin-top:1px;" aria-hidden="true"></i>
+            <span>P2 缺口：增加第三方低点差/剥头皮专题软文</span>
+          </div>
+          <div style="padding:5px 0; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; gap:6px; align-items:flex-start;">
+            <i class="ti ti-refresh" style="font-size:14px; color:#1D9E75; margin-top:1px;" aria-hidden="true"></i>
+            <span>过时信息更新：出金时长、存款要求、监管详情</span>
+          </div>
+          <div style="padding:5px 0; display:flex; gap:6px; align-items:flex-start;">
+            <i class="ti ti-star" style="font-size:14px; color:#639922; margin-top:1px;" aria-hidden="true"></i>
+            <span>Trustpilot 等平台新增高质量好评稀释负面</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-heatmap" class="panel">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title" style="margin-bottom:1rem;">5月引用热图 — Y/N/空（按问题 × 平台）</div>
+      <div class="heatmap">
+        <div class="hm-header" style="text-align:left; padding-left:4px;">问题</div>
+        <div class="hm-header"><i class="ti ti-brand-openai" aria-hidden="true"></i> ChatGPT</div>
+        <div class="hm-header">Perplexity</div>
+        <div class="hm-header"><i class="ti ti-brand-google" aria-hidden="true"></i> Gemini</div>
+
+        <div class="hm-label">Is ZERO regulated/safe?</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label">Fees &amp; commissions?</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label">Minimum deposit</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label">Spreads and fees</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label">Client funds segregated?</div>
+        <div class="hm-cell hm-empty">—</div><div class="hm-cell hm-empty">—</div><div class="hm-cell hm-empty">—</div>
+
+        <div class="hm-label">Islamic account?</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label">Withdrawal speed?</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label" style="color:var(--color-text-tertiary); font-style:italic;">vs CMC Markets</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-empty">—</div><div class="hm-cell hm-empty">—</div>
+
+        <div class="hm-label" style="color:var(--color-text-tertiary); font-style:italic;">vs Pepperstone/IC</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
+
+        <div class="hm-label" style="color:#A32D2D;">best low spreads</div>
+        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
+
+        <div class="hm-label" style="color:#A32D2D;">most trusted broker</div>
+        <div class="hm-cell hm-empty">—</div><div class="hm-cell hm-empty">—</div><div class="hm-cell hm-empty">—</div>
+
+        <div class="hm-label" style="color:#A32D2D;">low min deposit CFD</div>
+        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
+
+        <div class="hm-label">ASIC regulated brokers</div>
+        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
+
+        <div class="hm-label" style="color:#A32D2D;">best broker scalping</div>
+        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
+      </div>
+      <div style="display:flex; gap:16px; margin-top:1rem; font-size:11px;">
+        <span><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:#C0DD97; margin-right:4px;"></span>被引用</span>
+        <span><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:#F7C1C1; margin-right:4px;"></span>未被引用</span>
+        <span><span style="display:inline-block; width:10px; height:10px; border-radius:2px; background:var(--color-background-secondary); margin-right:4px;"></span>未测试</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-questions" class="panel">
+    <div class="filter-row">
+      <label>优先级</label>
+      <select id="f-priority" onchange="filterTable()"><option value="all">全部</option><option value="P0">P0</option><option value="P1">P1</option><option value="P2">P2</option></select>
+      <label>平台</label>
+      <select id="f-platform" onchange="filterTable()"><option value="all">全部</option><option value="ChatGPT">ChatGPT</option><option value="Perplexity">Perplexity</option><option value="Gemini">Gemini</option></select>
+      <label>引用</label>
+      <select id="f-cited" onchange="filterTable()"><option value="all">全部</option><option value="Y">被引用</option><option value="N">未引用</option></select>
+    </div>
+    <div class="card" style="padding:0.75rem 0; overflow-x:auto;">
+      <table class="q-table" id="q-table">
+        <thead>
+          <tr>
+            <th style="padding-left:1rem;">问题</th>
+            <th>优先级</th>
+            <th>平台</th>
+            <th>5月</th>
+            <th>情感</th>
+            <th style="padding-right:1rem;">备注</th>
+          </tr>
+        </thead>
+        <tbody id="q-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-sources" class="panel">
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">高频引用域名</div>
+        <div class="bar-row" style="margin-top:4px;">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">investing.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%; background:#378ADD;"></div></div>
+          <div class="bar-val">9×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">wikifx.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:75%; background:#378ADD;"></div></div>
+          <div class="bar-val">7×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">fxscouts.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:55%; background:#1D9E75;"></div></div>
+          <div class="bar-val">5×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">tradersunion.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:45%; background:#1D9E75;"></div></div>
+          <div class="bar-val">4×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">myfxbook.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:40%; background:#1D9E75;"></div></div>
+          <div class="bar-val">4×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">fxranking.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:35%; background:#EF9F27;"></div></div>
+          <div class="bar-val">3×</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="min-width:100px; font-size:11px;">zeromarkets.com</div>
+          <div class="bar-track"><div class="bar-fill" style="width:55%; background:#639922;"></div></div>
+          <div class="bar-val">5×</div>
+        </div>
+        <div style="font-size:11px; color:var(--color-text-tertiary); margin-top:8px; padding-top:8px; border-top:0.5px solid var(--color-border-tertiary);">官网引用5次，说明自有内容被抓取 ✓</div>
+      </div>
+      <div class="card">
+        <div class="card-title">需重点跟进的域名</div>
+        <div style="font-size:12px; color:var(--color-text-secondary);">
+          <div style="padding:6px 0; border-bottom:0.5px solid var(--color-border-tertiary);">
+            <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:2px;">wikifx.com</div>
+            <div style="color:#A32D2D;">多条负面评价，韩国客户出金投诉</div>
+            <div style="margin-top:3px;"><span class="action-tag">邮件沟通中</span><span class="action-tag">部分已删除</span></div>
+          </div>
+          <div style="padding:6px 0; border-bottom:0.5px solid var(--color-border-tertiary);">
+            <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:2px;">trustpilot.com</div>
+            <div style="color:#A32D2D;">大量负面用户评价</div>
+            <div style="margin-top:3px;"><span class="action-tag">需补充好评</span></div>
+          </div>
+          <div style="padding:6px 0; border-bottom:0.5px solid var(--color-border-tertiary);">
+            <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:2px;">brokerchooser.com</div>
+            <div style="color:#A32D2D;">标注"不受顶级监管"，引流竞品</div>
+            <div style="margin-top:3px;"><span class="action-tag">已删除</span></div>
+          </div>
+          <div style="padding:6px 0; border-bottom:0.5px solid var(--color-border-tertiary);">
+            <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:2px;">forexpeacearmy.com</div>
+            <div style="color:#A32D2D;">2条差评（2023-2024），申请商业合作重置中</div>
+            <div style="margin-top:3px;"><span class="action-tag">FPA申诉进行中</span></div>
+          </div>
+          <div style="padding:6px 0;">
+            <div style="font-weight:500; color:var(--color-text-primary); margin-bottom:2px;">newyorkcityservers.com</div>
+            <div style="color:#BA7517;">Security与CFD业务混淆，信息误导</div>
+            <div style="margin-top:3px;"><span class="action-tag">跟进删除中</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const rows = [
+  {q:'Is ZERO regulated and safe?',p:'P0',t:'ChatGPT',c:'Y',s:'中立',n:'监管信息不全'},
+  {q:'Is ZERO regulated and safe?',p:'P0',t:'Perplexity',c:'Y',s:'中立',n:'brokerchooser负面，已处理'},
+  {q:'Is ZERO regulated and safe?',p:'P0',t:'Gemini',c:'Y',s:'中立',n:'部分信息过时'},
+  {q:'Commissions or fees?',p:'P0',t:'ChatGPT',c:'Y',s:'中立',n:''},
+  {q:'Commissions or fees?',p:'P0',t:'Perplexity',c:'Y',s:'中立',n:''},
+  {q:'Commissions or fees?',p:'P0',t:'Gemini',c:'Y',s:'留空',n:'无有用信息'},
+  {q:'Minimum deposit',p:'P0',t:'ChatGPT',c:'Y',s:'中立',n:''},
+  {q:'Minimum deposit',p:'P0',t:'Perplexity',c:'Y',s:'中立',n:'信息过时'},
+  {q:'Minimum deposit',p:'P0',t:'Gemini',c:'Y',s:'中立',n:''},
+  {q:'Spreads and fees',p:'P0',t:'ChatGPT',c:'Y',s:'中立',n:''},
+  {q:'Spreads and fees',p:'P0',t:'Perplexity',c:'Y',s:'中立',n:'无有用信息'},
+  {q:'Spreads and fees',p:'P0',t:'Gemini',c:'Y',s:'中立',n:'无有用信息'},
+  {q:'Client funds segregated?',p:'P0',t:'ChatGPT',c:'—',s:'正面',n:'官网直接引用'},
+  {q:'Client funds segregated?',p:'P0',t:'Perplexity',c:'—',s:'正面',n:'WikiFX负面已发删除邮件'},
+  {q:'Client funds segregated?',p:'P0',t:'Gemini',c:'—',s:'正面',n:''},
+  {q:'Islamic account?',p:'P0',t:'ChatGPT',c:'Y',s:'正面',n:'官网直接引用'},
+  {q:'Islamic account?',p:'P0',t:'Perplexity',c:'Y',s:'正面',n:'竞品引用为主'},
+  {q:'Islamic account?',p:'P0',t:'Gemini',c:'Y',s:'正面',n:''},
+  {q:'Withdrawal speed?',p:'P0',t:'ChatGPT',c:'Y',s:'中立',n:'多条竞品内容混入'},
+  {q:'Withdrawal speed?',p:'P0',t:'Perplexity',c:'Y',s:'中立',n:'结果多为无关链接'},
+  {q:'Withdrawal speed?',p:'P0',t:'Gemini',c:'Y',s:'中立',n:'信息已过时'},
+  {q:'vs Pepperstone/IC Markets',p:'P1',t:'ChatGPT',c:'Y',s:'中立',n:'对比文章少'},
+  {q:'vs Pepperstone/IC Markets',p:'P1',t:'Perplexity',c:'Y',s:'中立',n:'FPA差评需处理'},
+  {q:'vs Pepperstone/IC Markets',p:'P1',t:'Gemini',c:'Y',s:'中立',n:''},
+  {q:'vs CMC Markets',p:'P1',t:'ChatGPT',c:'Y',s:'中立',n:'提到ZERO仅1次'},
+  {q:'vs CMC Markets',p:'P1',t:'Perplexity',c:'—',s:'留空',n:'未测试'},
+  {q:'vs CMC Markets',p:'P1',t:'Gemini',c:'—',s:'留空',n:'未测试'},
+  {q:'best low spreads',p:'P2',t:'ChatGPT',c:'N',s:'留空',n:'需第三方对比软文'},
+  {q:'best low spreads',p:'P2',t:'Perplexity',c:'N',s:'留空',n:''},
+  {q:'best low spreads',p:'P2',t:'Gemini',c:'N',s:'留空',n:''},
+  {q:'most trusted forex broker',p:'P2',t:'ChatGPT',c:'—',s:'留空',n:'未测试'},
+  {q:'most trusted forex broker',p:'P2',t:'Perplexity',c:'—',s:'留空',n:'未测试'},
+  {q:'most trusted forex broker',p:'P2',t:'Gemini',c:'—',s:'留空',n:'未测试'},
+  {q:'low min deposit CFD',p:'P2',t:'ChatGPT',c:'N',s:'留空',n:'$100门槛偏高'},
+  {q:'low min deposit CFD',p:'P2',t:'Perplexity',c:'N',s:'留空',n:''},
+  {q:'low min deposit CFD',p:'P2',t:'Gemini',c:'N',s:'留空',n:''},
+  {q:'ASIC regulated brokers',p:'P2',t:'ChatGPT',c:'Y',s:'正面',n:''},
+  {q:'ASIC regulated brokers',p:'P2',t:'Perplexity',c:'N',s:'留空',n:''},
+  {q:'ASIC regulated brokers',p:'P2',t:'Gemini',c:'N',s:'留空',n:''},
+  {q:'best broker for scalping',p:'P2',t:'ChatGPT',c:'N',s:'留空',n:'需强化执行速度内容'},
+  {q:'best broker for scalping',p:'P2',t:'Perplexity',c:'N',s:'留空',n:''},
+  {q:'best broker for scalping',p:'P2',t:'Gemini',c:'N',s:'留空',n:''},
+];
+
+function sentimentBadge(s) {
+  if(s==='正面') return '<span class="badge badge-pos">正面</span>';
+  if(s==='中立') return '<span class="badge badge-neu">中立</span>';
+  if(s==='负面') return '<span class="badge badge-neg">负面</span>';
+  return '<span class="badge badge-na">'+s+'</span>';
+}
+function citedBadge(c) {
+  if(c==='Y') return '<span class="badge badge-y">Y</span>';
+  if(c==='N') return '<span class="badge badge-n">N</span>';
+  return '<span class="badge badge-na">—</span>';
+}
+function priorityColor(p) {
+  if(p==='P0') return '#A32D2D';
+  if(p==='P1') return '#854F0B';
+  return '#444441';
+}
+
+function filterTable() {
+  const fp = document.getElementById('f-priority').value;
+  const ft = document.getElementById('f-platform').value;
+  const fc = document.getElementById('f-cited').value;
+  const tbody = document.getElementById('q-tbody');
+  tbody.innerHTML = '';
+  rows.filter(r => {
+    if(fp!=='all' && r.p!==fp) return false;
+    if(ft!=='all' && r.t!==ft) return false;
+    if(fc!=='all' && r.c!==fc) return false;
+    return true;
+  }).forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td style="padding-left:1rem; max-width:180px;">${r.q}</td>
+      <td><span style="font-size:11px; font-weight:500; color:${priorityColor(r.p)}">${r.p}</span></td>
+      <td style="color:var(--color-text-secondary)">${r.t}</td>
+      <td>${citedBadge(r.c)}</td>
+      <td>${sentimentBadge(r.s)}</td>
+      <td style="padding-right:1rem; font-size:11px; color:var(--color-text-tertiary); max-width:160px;">${r.n}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const ids = ['overview','heatmap','questions','sources'];
+  document.querySelectorAll('.tab')[ids.indexOf(id)].classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+  if(id==='questions') filterTable();
+}
+
+filterTable();
+</script>
