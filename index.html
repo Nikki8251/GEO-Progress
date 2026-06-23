@@ -1,707 +1,885 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZERO Markets · GEO Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>ZERO Markets — AI SEO Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0c0c0e;
-  --surface: #141416;
-  --surface2: #1c1c1f;
-  --surface3: #242428;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #f0efe8;
-  --text2: #9b9a93;
-  --text3: #5a5a55;
-  --green: #4ade80;
-  --green-dim: rgba(74,222,128,0.12);
-  --amber: #fbbf24;
-  --amber-dim: rgba(251,191,36,0.12);
-  --red: #f87171;
-  --red-dim: rgba(248,113,113,0.12);
-  --blue: #60a5fa;
-  --blue-dim: rgba(96,165,250,0.12);
-  --accent: #e8e4d9;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0E1A14;--ink-60:#5A6B62;--ink-30:#B0BDB5;--ink-10:#EFF3F0;
+  --teal:#0B6B52;--teal-mid:#1A9970;--teal-pale:#E2F4EE;
+  --gold:#8A5F00;--gold-pale:#FDF4DC;
+  --red:#A0291A;--red-pale:#FDECEA;
+  --purple:#4A3FAA;--purple-pale:#EEEDFB;
+  --page:#F7F8F6;--white:#FFFFFF;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
 }
+html{-webkit-font-smoothing:antialiased;font-size:15px}
+body{font-family:var(--sans);background:var(--page);color:var(--ink)}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── NAV ── */
+.top-nav{background:var(--ink);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.06)}
+.top-nav-inner{max-width:880px;margin:0 auto;padding:0 48px;display:flex;align-items:center}
+.nav-logo{font-size:13px;font-weight:600;color:#fff;padding:14px 0;margin-right:32px;opacity:0.9;white-space:nowrap}
+.nav-links{display:flex;gap:0;overflow-x:auto}
+.nav-link{font-size:12px;color:rgba(255,255,255,0.45);padding:14px 16px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color 0.15s}
+.nav-link:hover{color:rgba(255,255,255,0.75)}
+.nav-link.active{color:var(--teal-mid);border-bottom-color:var(--teal-mid)}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 13px;
-  -webkit-font-smoothing: antialiased;
-}
+/* ── LAYOUT ── */
+.content-area{display:none;max-width:880px;margin:0 auto;padding:48px 48px 80px}
+.content-area.active{display:block}
 
-.app { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+/* ── HERO ── */
+.hero{background:var(--ink);color:#fff;padding:56px 48px}
+.hero-inner{max-width:880px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.hero-eyebrow{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-mid);font-weight:600;margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(32px,5vw,52px);line-height:1.1;margin-bottom:16px}
+.hero h1 em{font-style:italic;color:var(--teal-mid)}
+.hero p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:560px;margin-bottom:24px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hero-stat .num{font-family:var(--serif);font-size:36px;color:var(--teal-mid)}
+.hero-stat .label{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
 
-/* Header */
-.header { margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
-.header-left {}
-.eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
-.headline { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--text); line-height: 1.15; font-weight: 400; }
-.headline em { font-style: italic; color: var(--text2); }
-.header-right { text-align: right; }
-.date-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); background: var(--surface2); border: 0.5px solid var(--border); padding: 4px 10px; border-radius: 20px; }
-.platforms { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
-.platform-pill { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--surface3); color: var(--text2); }
+/* ── TYPOGRAPHY ── */
+h2{font-family:var(--serif);font-size:clamp(22px,3vw,30px);line-height:1.2;color:var(--ink);margin-bottom:10px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;margin-top:28px}
+h3:first-child{margin-top:0}
+p{font-size:14px;line-height:1.75;color:var(--ink-60);margin-bottom:14px}
+p:last-child{margin-bottom:0}
+strong{color:var(--ink);font-weight:500}
+code{font-family:var(--mono);font-size:12px;background:var(--ink-10);padding:2px 6px;border-radius:3px;color:var(--ink)}
 
-/* KPI Strip */
-.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; }
-.kpi { background: var(--surface); padding: 1.25rem 1.5rem; position: relative; overflow: hidden; }
-.kpi::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%); pointer-events: none; }
-.kpi-label { font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
-.kpi-val { font-family: 'Instrument Serif', serif; font-size: 32px; color: var(--text); line-height: 1; font-weight: 400; margin-bottom: 4px; }
-.kpi-sub { font-size: 10px; color: var(--text3); }
-.kpi-accent { position: absolute; top: 0; right: 0; width: 2px; height: 100%; }
-.kpi-accent.green { background: var(--green); }
-.kpi-accent.amber { background: var(--amber); }
-.kpi-accent.red { background: var(--red); }
-.kpi-accent.blue { background: var(--blue); }
+/* ── SECTION META ── */
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.section-lead{font-size:15px;color:var(--ink-60);line-height:1.7;max-width:600px;margin-bottom:36px}
+.divider{border:none;border-top:1px solid var(--ink-10);margin:40px 0}
 
-/* Tabs */
-.tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 3px; }
-.tab { flex: 1; font-size: 11px; font-family: 'DM Mono', monospace; padding: 7px 0; text-align: center; border: none; background: none; color: var(--text3); cursor: pointer; border-radius: 6px; transition: all 0.15s; letter-spacing: 0.05em; }
-.tab:hover { color: var(--text2); background: var(--surface2); }
-.tab.active { background: var(--surface3); color: var(--text); }
+/* ── CALLOUT BLOCKS ── */
+.callout{border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;font-size:13px;line-height:1.65}
+.callout-teal{background:var(--teal-pale);border-left:3px solid var(--teal)}
+.callout-teal strong{color:var(--teal)}
+.callout-amber{background:var(--gold-pale);border-left:3px solid var(--gold)}
+.callout-amber strong{color:var(--gold)}
+.callout-red{background:var(--red-pale);border-left:3px solid var(--red)}
+.callout-red strong{color:var(--red)}
+.callout-purple{background:var(--purple-pale);border-left:3px solid var(--purple)}
+.callout-purple strong{color:var(--purple)}
 
-/* Panel */
-.panel { display: none; }
-.panel.active { display: block; }
+/* ── RESEARCH BLOCK ── */
+.research-block{background:var(--ink);color:#fff;border-radius:12px;padding:28px 32px;margin:24px 0}
+.research-block .r-label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal-mid);font-weight:600;margin-bottom:14px}
+.research-block .r-title{font-family:var(--serif);font-size:20px;color:#fff;margin-bottom:16px}
+.boost-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:16px}
+.boost-card{background:rgba(255,255,255,0.05);border-radius:8px;padding:14px}
+.boost-card .b-pct{font-family:var(--serif);font-size:28px;color:var(--teal-mid)}
+.boost-card .b-method{font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px}
+.boost-card .b-zero{font-size:11px;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.4;border-top:1px solid rgba(255,255,255,0.08);padding-top:6px}
 
-/* Grid layouts */
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+/* ── THREE PILLARS ── */
+.pillar-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.pillar{background:var(--white);border:1px solid var(--ink-10);border-radius:10px;padding:20px}
+.pillar-num{font-family:var(--serif);font-size:40px;color:var(--ink-10);line-height:1;margin-bottom:6px}
+.pillar-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.pillar-tagline{font-size:12px;color:var(--ink-60);line-height:1.5;margin-bottom:12px}
+.pillar-zero{font-size:11px;color:var(--teal);background:var(--teal-pale);padding:8px 10px;border-radius:6px;line-height:1.5}
+@media(max-width:640px){.pillar-row{grid-template-columns:1fr}}
 
-/* Cards */
-.card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 1.25rem;
-}
-.card-head { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-.card-head-tag { background: var(--surface2); color: var(--text3); font-size: 9px; padding: 2px 6px; border-radius: 4px; }
+/* ── ACTION TABLE ── */
+.action-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+.action-table th{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-60);text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink)}
+.action-table td{padding:11px 10px;border-bottom:1px solid var(--ink-10);vertical-align:top;line-height:1.5;color:var(--ink)}
+.action-table tr:last-child td{border-bottom:none}
+.action-table td:first-child{font-weight:500}
 
-/* Bar rows */
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.bar-row:last-child { margin-bottom: 0; }
-.bar-lbl { font-size: 11px; color: var(--text2); width: 80px; text-align: right; flex-shrink: 0; }
-.bar-track { flex: 1; height: 6px; background: var(--surface3); border-radius: 3px; overflow: visible; position: relative; }
-.bar-fill { height: 100%; border-radius: 3px; position: relative; transition: width 0.8s cubic-bezier(0.25,1,0.5,1); }
-.bar-fill::after { content: attr(data-val); position: absolute; right: -28px; top: -4px; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text2); white-space: nowrap; }
+/* ── PRIORITY PILLS ── */
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:0.04em}
+.pill-p0{background:var(--red-pale);color:var(--red)}
+.pill-p1{background:var(--gold-pale);color:var(--gold)}
+.pill-p2{background:var(--teal-pale);color:var(--teal)}
+.pill-done{background:var(--ink-10);color:var(--ink-60)}
 
-/* Heatmap */
-.hm-grid { display: grid; grid-template-columns: 160px repeat(3, 1fr); gap: 3px; }
-.hm-hd { font-size: 9px; font-family: 'DM Mono', monospace; color: var(--text3); text-align: center; padding: 6px 4px; letter-spacing: 0.06em; text-transform: uppercase; }
-.hm-lbl { font-size: 10px; color: var(--text2); padding: 4px 6px; display: flex; align-items: center; min-height: 30px; line-height: 1.3; border-radius: 4px; }
-.hm-lbl.p0 { color: var(--text); }
-.hm-lbl.p1 { color: var(--text2); }
-.hm-lbl.p2 { color: var(--text3); }
-.hm-cell { border-radius: 5px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500; cursor: default; }
-.hm-y { background: rgba(74,222,128,0.15); color: var(--green); }
-.hm-n { background: rgba(248,113,113,0.12); color: var(--red); }
-.hm-e { background: var(--surface3); color: var(--text3); }
-.hm-sep { grid-column: 1/-1; height: 1px; background: var(--border); margin: 3px 0; }
+/* ── STATUS BADGES ── */
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 8px;border-radius:4px}
+.badge-done{background:var(--teal-pale);color:var(--teal)}
+.badge-wip{background:var(--gold-pale);color:var(--gold)}
+.badge-todo{background:var(--red-pale);color:var(--red)}
+.badge-na{background:var(--ink-10);color:var(--ink-60)}
 
-/* Section divider */
-.divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+/* ── CONTENT PATTERN BLOCKS ── */
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+@media(max-width:640px){.pattern-grid{grid-template-columns:1fr}}
+.pattern-card{background:var(--white);border:1px solid var(--ink-10);border-radius:10px;overflow:hidden}
+.pattern-header{padding:12px 16px;background:var(--page);border-bottom:1px solid var(--ink-10);display:flex;justify-content:space-between;align-items:center}
+.pattern-title{font-size:12px;font-weight:600;color:var(--ink)}
+.pattern-cite{font-size:10px;color:var(--teal);font-weight:500}
+.pattern-body{padding:14px 16px;font-size:12px;font-family:var(--mono);color:var(--ink-60);line-height:1.7;background:#FAFBFA}
+.pattern-body .comment{color:var(--ink-30)}
+.pattern-body .highlight{color:var(--ink);font-weight:500}
 
-/* Sentiment distribution */
-.sent-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
-.sent-row:last-child { border-bottom: none; }
-.sent-left { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
-.sent-dot { width: 6px; height: 6px; border-radius: 50%; }
-.sent-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); }
+/* ── PRESENCE TABLE ── */
+.presence-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+@media(max-width:640px){.presence-grid{grid-template-columns:1fr}}
+.presence-card{background:var(--white);border:1px solid var(--ink-10);border-radius:10px;padding:16px}
+.presence-card .pc-domain{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.presence-card .pc-share{font-family:var(--serif);font-size:24px;color:var(--teal);line-height:1}
+.presence-card .pc-why{font-size:12px;color:var(--ink-60);margin-top:6px;line-height:1.5}
+.presence-card .pc-zero{font-size:11px;margin-top:8px;padding:6px 8px;border-radius:4px;line-height:1.4}
 
-/* Badges */
-.badge { display: inline-flex; align-items: center; font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 7px; border-radius: 4px; }
-.b-y { background: rgba(74,222,128,0.15); color: var(--green); }
-.b-n { background: rgba(248,113,113,0.12); color: var(--red); }
-.b-pos { background: rgba(74,222,128,0.15); color: var(--green); }
-.b-neu { background: rgba(251,191,36,0.12); color: var(--amber); }
-.b-neg { background: rgba(248,113,113,0.12); color: var(--red); }
-.b-na { background: var(--surface3); color: var(--text3); }
+/* ── TOOL TABLE ── */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}
+.tool-card{background:var(--white);border:1px solid var(--ink-10);border-radius:8px;padding:14px}
+.tool-card .tc-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.tool-card .tc-coverage{font-size:11px;color:var(--teal);margin-bottom:4px;font-weight:500}
+.tool-card .tc-use{font-size:12px;color:var(--ink-60);line-height:1.5}
 
-/* Priority label */
-.priority { font-size: 9px; font-family: 'DM Mono', monospace; padding: 1px 5px; border-radius: 3px; }
-.p-p0 { background: rgba(248,113,113,0.15); color: var(--red); }
-.p-p1 { background: rgba(251,191,36,0.12); color: var(--amber); }
-.p-p2 { background: var(--surface3); color: var(--text3); }
+/* ── ROBOTS.TXT BLOCK ── */
+.code-block{background:#0E1A14;border-radius:10px;overflow:hidden;margin:16px 0}
+.code-header{padding:10px 18px;background:rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+.code-header span{font-size:11px;color:rgba(255,255,255,0.35);font-family:var(--mono)}
+.code-header .code-title{color:rgba(255,255,255,0.6);font-weight:500}
+pre{padding:20px 22px;font-family:var(--mono);font-size:12px;line-height:1.8;color:#A8D5BE;overflow-x:auto}
+.c-comment{color:rgba(255,255,255,0.2)}
+.c-key{color:#7EC8A4}
+.c-val{color:#F0C98A}
+.c-warn{color:#FF9966}
 
-/* Q table */
-.q-table { width: 100%; border-collapse: collapse; }
-.q-table th { font-size: 9px; font-family: 'DM Mono', monospace; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px 10px; text-align: left; border-bottom: 0.5px solid var(--border2); }
-.q-table td { padding: 9px 8px; border-bottom: 0.5px solid var(--border); font-size: 11px; color: var(--text2); vertical-align: middle; }
-.q-table tr:last-child td { border-bottom: none; }
-.q-table .td-q { color: var(--text); max-width: 180px; line-height: 1.4; }
-.q-table .td-note { color: var(--text3); font-size: 10px; max-width: 140px; line-height: 1.4; }
+/* ── MISTAKE LIST ── */
+.mistake-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.mistake-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;padding:12px 14px;background:var(--white);border:1px solid var(--ink-10);border-radius:8px;line-height:1.5}
+.mistake-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.mistake-item .m-label{font-weight:500;color:var(--ink)}
+.mistake-item .m-zero{font-size:12px;color:var(--teal);margin-top:3px}
 
-/* Filter row */
-.filter-row { display: flex; gap: 8px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-.f-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
-.f-select { font-size: 11px; padding: 5px 10px; border-radius: 6px; border: 0.5px solid var(--border2); background: var(--surface2); color: var(--text2); font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none; }
-.f-select:focus { border-color: var(--border2); }
-
-/* Source domain list */
-.src-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid var(--border); }
-.src-row:last-child { border-bottom: none; }
-.src-domain { font-size: 11px; color: var(--text); font-family: 'DM Mono', monospace; }
-.src-count-wrap { display: flex; align-items: center; gap: 6px; }
-.src-bar { height: 3px; border-radius: 2px; background: var(--blue); }
-.src-count { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; min-width: 20px; text-align: right; }
-
-/* Action items */
-.action-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
-.action-item:last-child { border-bottom: none; }
-.action-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
-.action-icon.warn { background: var(--amber-dim); }
-.action-icon.info { background: var(--blue-dim); }
-.action-icon.ok { background: var(--green-dim); }
-.action-icon.err { background: var(--red-dim); }
-.action-text { font-size: 11px; color: var(--text2); line-height: 1.5; }
-.action-tag { display: inline-block; font-size: 9px; font-family: 'DM Mono', monospace; padding: 1px 5px; border-radius: 3px; background: var(--surface3); color: var(--text3); margin-top: 3px; margin-right: 3px; }
-
-/* Watch domain list */
-.watch-item { padding: 10px 0; border-bottom: 0.5px solid var(--border); }
-.watch-item:last-child { border-bottom: none; }
-.watch-domain { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); margin-bottom: 3px; }
-.watch-desc { font-size: 10px; color: var(--text3); line-height: 1.5; margin-bottom: 4px; }
-.watch-status { display: inline-flex; font-size: 9px; font-family: 'DM Mono', monospace; padding: 1px 6px; border-radius: 3px; }
-.ws-warn { background: var(--amber-dim); color: var(--amber); }
-.ws-ok { background: var(--green-dim); color: var(--green); }
-.ws-info { background: var(--blue-dim); color: var(--blue); }
-.ws-err { background: var(--red-dim); color: var(--red); }
-
-/* Animate in */
-@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-.kpi { animation: fadeUp 0.4s ease both; }
-.kpi:nth-child(1) { animation-delay: 0.05s; }
-.kpi:nth-child(2) { animation-delay: 0.1s; }
-.kpi:nth-child(3) { animation-delay: 0.15s; }
-.kpi:nth-child(4) { animation-delay: 0.2s; }
-
-/* Gap item */
-.gap-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
-.gap-item:last-child { border-bottom: none; }
-.gap-name { font-size: 11px; color: var(--text2); }
-.gap-pills { display: flex; gap: 3px; }
-.gap-pill { font-size: 9px; font-family: 'DM Mono', monospace; padding: 2px 5px; border-radius: 3px; background: rgba(248,113,113,0.12); color: var(--red); }
-.gap-pill.ok { background: rgba(74,222,128,0.12); color: var(--green); }
-
+/* ── QUERY TABLE ── */
+.query-table{width:100%;border-collapse:collapse;font-size:12px;margin:16px 0}
+.query-table th{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-60);text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink)}
+.query-table td{padding:9px 10px;border-bottom:1px solid var(--ink-10);vertical-align:top;line-height:1.5;color:var(--ink)}
+.y{color:var(--teal);font-weight:700}
+.n{color:var(--red);font-weight:700}
+.dash{color:var(--ink-30)}
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-left">
-      <div class="eyebrow">ZERO Markets · GEO Intelligence</div>
-      <div class="headline">AI 平台引用追踪<br><em>May 2025 · Round 1</em></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div style="flex:1;min-width:280px">
+      <div class="hero-eyebrow">AI SEO Playbook · Based on marketingskills/ai-seo · June 2026</div>
+      <h1>ZERO Markets<br><em>AI Citation Playbook</em></h1>
+      <p style="margin-bottom:0">Three pillars, 48 tested queries, Princeton GEO research — applied to a multi-regulated forex broker with an 89% P0 citation rate and 11 P2 gaps to close.</p>
     </div>
-    <div class="header-right">
-      <div class="date-badge">↻ 月度更新</div>
-      <div class="platforms">
-        <span class="platform-pill">ChatGPT</span>
-        <span class="platform-pill">Perplexity</span>
-        <span class="platform-pill">Gemini</span>
-      </div>
+    <div class="hero-stats" style="flex-shrink:0;align-items:flex-end;padding-bottom:4px">
+      <div class="hero-stat" style="text-align:right"><div class="num">89%</div><div class="label">P0 brand citation rate</div></div>
+      <div class="hero-stat" style="text-align:right"><div class="num">11</div><div class="label">P2 specialist gaps</div></div>
+      <div class="hero-stat" style="text-align:right"><div class="num">3×</div><div class="label">citation boost from structure</div></div>
+      <div class="hero-stat" style="text-align:right"><div class="num">+40%</div><div class="label">from citing sources</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="top-nav">
+  <div class="top-nav-inner">
+  <div class="nav-logo">ZERO GEO</div>
+  <div class="nav-links">
+    <div class="nav-link active" onclick="showTab('audit')">Visibility Audit</div>
+    <div class="nav-link" onclick="showTab('structure')">Structure</div>
+    <div class="nav-link" onclick="showTab('authority')">Authority</div>
+    <div class="nav-link" onclick="showTab('presence')">Presence</div>
+    <div class="nav-link" onclick="showTab('bots')">Bot Access</div>
+    <div class="nav-link" onclick="showTab('monitor')">Monitoring</div>
+    <div class="nav-link" onclick="showTab('mistakes')">Mistakes</div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 1: AUDIT -->
+<div class="content-area active" id="tab-audit">
+
+  <div class="section-eyebrow">Current State</div>
+  <h2>AI Visibility Audit<br>ZERO Markets · May 2025</h2>
+  <p class="section-lead">Step 1 of the ai-seo skill: check AI answers for your key queries before optimising. We ran 48 questions across ChatGPT, Perplexity, and Gemini.</p>
+
+  <div class="pillar-row">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-name">Structure</div>
+      <div class="pillar-tagline">Make content extractable — AI cites passages, not pages</div>
+      <div class="pillar-zero">ZERO: Content not chunked, inverted pyramid missing</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-name">Authority</div>
+      <div class="pillar-tagline">Make content citable — statistics, citations, expert attribution</div>
+      <div class="pillar-zero">ZERO: Licences exist, not structured for AI extraction</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-name">Presence</div>
+      <div class="pillar-tagline">Be where AI looks — 6.5× more citations from third-party sources</div>
+      <div class="pillar-zero">ZERO: WikiFX, FPA, TrustPilot — all active but negative</div>
     </div>
   </div>
 
-  <!-- KPI Strip -->
-  <div class="kpi-strip">
-    <div class="kpi">
-      <div class="kpi-accent green"></div>
-      <div class="kpi-label">测试问题</div>
-      <div class="kpi-val">48</div>
-      <div class="kpi-sub">P0 × 18 · P1 × 12 · P2 × 18</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-accent blue"></div>
-      <div class="kpi-label">P0 引用率</div>
-      <div class="kpi-val">89<span style="font-size:16px; color:var(--text2);">%</span></div>
-      <div class="kpi-sub">品牌直搜三平台均值</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-accent amber"></div>
-      <div class="kpi-label">主导情感</div>
-      <div class="kpi-val" style="font-size:22px; line-height:1.3; margin-top:4px;">中立</div>
-      <div class="kpi-sub">正面 ↑ · 负面待清理</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-accent red"></div>
-      <div class="kpi-label">P2 缺口</div>
-      <div class="kpi-val">11</div>
-      <div class="kpi-sub">专项搜索未被引用项</div>
-    </div>
+  <div class="callout callout-teal">
+    <strong>Key insight from the skill:</strong> AI systems select sources based on content quality, structure, and relevance — not just ranking position. A well-structured page ranked #3 can get cited over a page ranked #1. ZERO's 89% P0 brand-direct citation rate proves our domain has authority. The gap is structure and content depth, not trust.
   </div>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('overview')">总览</button>
-    <button class="tab" onclick="switchTab('heatmap')">引用热图</button>
-    <button class="tab" onclick="switchTab('detail')">问题明细</button>
-    <button class="tab" onclick="switchTab('sources')">引用来源</button>
-  </div>
+  <h3>Current AI citation heatmap</h3>
+  <table class="query-table">
+    <tr>
+      <th style="width:34%">Query</th>
+      <th style="width:8%">Priority</th>
+      <th style="width:14%">ChatGPT</th>
+      <th style="width:14%">Perplexity</th>
+      <th style="width:14%">Gemini</th>
+      <th style="width:16%">Root cause</th>
+    </tr>
+    <tr><td colspan="6" style="padding:10px;font-size:11px;color:var(--ink-60);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Brand Direct (P0)</td></tr>
+    <tr><td>Is ZERO regulated &amp; safe?</td><td><span class="pill pill-p0">P0</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td style="color:var(--gold-600)">Neutral — info incomplete</td></tr>
+    <tr><td>Fees &amp; commissions</td><td><span class="pill pill-p0">P0</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td>Neutral — no useful info</td></tr>
+    <tr><td>Minimum deposit</td><td><span class="pill pill-p0">P0</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td>Neutral — outdated</td></tr>
+    <tr><td>Client funds segregated?</td><td><span class="pill pill-p0">P0</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td>Positive but uncited</td></tr>
+    <tr><td>Islamic account?</td><td><span class="pill pill-p0">P0</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td>Positive ✓</td></tr>
+    <tr><td>Withdrawal speed</td><td><span class="pill pill-p0">P0</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td>Neutral — outdated</td></tr>
+    <tr><td colspan="6" style="padding:10px;font-size:11px;color:var(--ink-60);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Competitor (P1)</td></tr>
+    <tr><td>vs Pepperstone / IC Markets</td><td><span class="pill pill-p1">P1</span></td><td class="y">Y</td><td class="y">Y</td><td class="y">Y</td><td>Neutral — few articles</td></tr>
+    <tr><td>vs CMC Markets</td><td><span class="pill pill-p1">P1</span></td><td class="y">Y</td><td class="dash">—</td><td class="dash">—</td><td>Only 1 mention</td></tr>
+    <tr><td>vs FP Markets</td><td><span class="pill pill-p1">P1</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td>Untested</td></tr>
+    <tr><td colspan="6" style="padding:10px;font-size:11px;color:var(--ink-60);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Specialist Search (P2) — all gaps</td></tr>
+    <tr><td>Best low spreads broker</td><td><span class="pill pill-p2">P2</span></td><td class="n">N</td><td class="n">N</td><td class="n">N</td><td style="color:var(--red)">Zero citations · need articles</td></tr>
+    <tr><td>Best broker for scalping</td><td><span class="pill pill-p2">P2</span></td><td class="n">N</td><td class="n">N</td><td class="n">N</td><td style="color:var(--red)">Zero citations · no content</td></tr>
+    <tr><td>Low min deposit CFD</td><td><span class="pill pill-p2">P2</span></td><td class="n">N</td><td class="n">N</td><td class="n">N</td><td style="color:var(--red)">Zero citations</td></tr>
+    <tr><td>ASIC regulated brokers list</td><td><span class="pill pill-p2">P2</span></td><td class="y">Y</td><td class="n">N</td><td class="n">N</td><td>Partial — needs improvement</td></tr>
+    <tr><td>Most trusted forex broker</td><td><span class="pill pill-p2">P2</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td>Untested — high intent</td></tr>
+  </table>
 
-  <!-- Panel: Overview -->
-  <div id="p-overview" class="panel active">
-    <div class="g2" style="margin-bottom:12px;">
-
-      <div class="card">
-        <div class="card-head">各平台 P0 引用率 <span class="card-head-tag">已测6题</span></div>
-        <div style="margin-bottom: 16px;">
-          <div class="bar-row" style="margin-bottom:14px;">
-            <div class="bar-lbl">ChatGPT</div>
-            <div class="bar-track" style="margin-right: 36px;">
-              <div class="bar-fill" style="width:83%; background:var(--blue);" data-val="83%"></div>
-            </div>
-          </div>
-          <div class="bar-row" style="margin-bottom:14px;">
-            <div class="bar-lbl">Perplexity</div>
-            <div class="bar-track" style="margin-right: 36px;">
-              <div class="bar-fill" style="width:100%; background:var(--green);" data-val="100%"></div>
-            </div>
-          </div>
-          <div class="bar-row" style="margin-bottom:14px;">
-            <div class="bar-lbl">Gemini</div>
-            <div class="bar-track" style="margin-right: 36px;">
-              <div class="bar-fill" style="width:83%; background:var(--amber);" data-val="83%"></div>
-            </div>
-          </div>
-        </div>
-        <div style="font-size:10px; color:var(--text3); padding-top:10px; border-top:0.5px solid var(--border);">Perplexity 全覆盖 · funds segregated 三平台均未测试</div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">情感分布 <span class="card-head-tag">P0 已引用</span></div>
-        <div class="sent-row">
-          <div class="sent-left"><div class="sent-dot" style="background:var(--green);"></div>正面</div>
-          <div class="sent-val">4</div>
-        </div>
-        <div class="sent-row">
-          <div class="sent-left"><div class="sent-dot" style="background:var(--amber);"></div>中立</div>
-          <div class="sent-val">11</div>
-        </div>
-        <div class="sent-row">
-          <div class="sent-left"><div class="sent-dot" style="background:var(--red);"></div>负面</div>
-          <div class="sent-val">0</div>
-        </div>
-        <div class="sent-row">
-          <div class="sent-left"><div class="sent-dot" style="background:var(--text3);"></div>留空/未测</div>
-          <div class="sent-val">3</div>
-        </div>
-        <div style="margin-top:10px; padding-top:10px; border-top:0.5px solid var(--border); font-size:10px; color:var(--text3);">中立占比 73% → 需主动投入正面内容</div>
-      </div>
-    </div>
-
-    <div class="g2">
-      <div class="card">
-        <div class="card-head">P2 专项搜索缺口 <span class="card-head-tag">未被引用</span></div>
-        <div class="gap-item">
-          <div class="gap-name">best low spreads forex broker</div>
-          <div class="gap-pills">
-            <span class="gap-pill">GPT</span>
-            <span class="gap-pill">Perp</span>
-            <span class="gap-pill">Gem</span>
-          </div>
-        </div>
-        <div class="gap-item">
-          <div class="gap-name">low min deposit CFD broker</div>
-          <div class="gap-pills">
-            <span class="gap-pill">GPT</span>
-            <span class="gap-pill">Perp</span>
-            <span class="gap-pill">Gem</span>
-          </div>
-        </div>
-        <div class="gap-item">
-          <div class="gap-name">best forex broker for scalping</div>
-          <div class="gap-pills">
-            <span class="gap-pill">GPT</span>
-            <span class="gap-pill">Perp</span>
-            <span class="gap-pill">Gem</span>
-          </div>
-        </div>
-        <div class="gap-item">
-          <div class="gap-name">ASIC regulated brokers list</div>
-          <div class="gap-pills">
-            <span class="gap-pill ok">GPT</span>
-            <span class="gap-pill">Perp</span>
-            <span class="gap-pill">Gem</span>
-          </div>
-        </div>
-        <div class="gap-item">
-          <div class="gap-name">most trusted forex broker</div>
-          <div class="gap-pills">
-            <span class="gap-pill" style="background:var(--surface3); color:var(--text3);">未测</span>
-            <span class="gap-pill" style="background:var(--surface3); color:var(--text3);">未测</span>
-            <span class="gap-pill" style="background:var(--surface3); color:var(--text3);">未测</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">关键行动项</div>
-        <div class="action-item">
-          <div class="action-icon warn">⚠</div>
-          <div class="action-text">
-            WikiFX / FPA 负面评价主动回复或申请下架
-            <div><span class="action-tag">邮件沟通中</span><span class="action-tag">部分已删</span></div>
-          </div>
-        </div>
-        <div class="action-item">
-          <div class="action-icon info">✎</div>
-          <div class="action-text">
-            P2 缺口：增加第三方低点差/剥头皮专题软文
-            <div><span class="action-tag">待执行</span></div>
-          </div>
-        </div>
-        <div class="action-item">
-          <div class="action-icon ok">↻</div>
-          <div class="action-text">
-            更新过时信息：出金时长、入金门槛、监管详情
-            <div><span class="action-tag">进行中</span></div>
-          </div>
-        </div>
-        <div class="action-item">
-          <div class="action-icon ok">★</div>
-          <div class="action-text">
-            Trustpilot 等平台补充高质量好评稀释负面
-            <div><span class="action-tag">待执行</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Panel: Heatmap -->
-  <div id="p-heatmap" class="panel">
-    <div class="card">
-      <div class="card-head">引用热图 · 5月 <span class="card-head-tag">问题 × 平台</span></div>
-      <div class="hm-grid">
-        <div class="hm-hd" style="text-align:left;">问题</div>
-        <div class="hm-hd">ChatGPT</div>
-        <div class="hm-hd">Perplexity</div>
-        <div class="hm-hd">Gemini</div>
-
-        <!-- P0 block -->
-        <div style="grid-column:1/-1; font-size:9px; font-family:'DM Mono',monospace; color:var(--red); letter-spacing:0.08em; padding:8px 0 4px; text-transform:uppercase;">P0 · 品牌直搜</div>
-
-        <div class="hm-lbl p0">Is ZERO regulated &amp; safe?</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p0">Fees &amp; commissions</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p0">Minimum deposit</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p0">Spreads and fees</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p0">Client funds segregated?</div>
-        <div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div>
-
-        <div class="hm-lbl p0">Islamic account?</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p0">Withdrawal speed</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <!-- P1 block -->
-        <div style="grid-column:1/-1; font-size:9px; font-family:'DM Mono',monospace; color:var(--amber); letter-spacing:0.08em; padding:8px 0 4px; text-transform:uppercase;">P1 · 竞品对比</div>
-
-        <div class="hm-lbl p1">vs Pepperstone / IC Markets</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div><div class="hm-cell hm-y">Y</div>
-
-        <div class="hm-lbl p1">vs CMC Markets</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div>
-
-        <div class="hm-lbl p1">vs FP Markets</div>
-        <div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div>
-
-        <!-- P2 block -->
-        <div style="grid-column:1/-1; font-size:9px; font-family:'DM Mono',monospace; color:var(--text3); letter-spacing:0.08em; padding:8px 0 4px; text-transform:uppercase;">P2 · 专项搜索</div>
-
-        <div class="hm-lbl p2">best low spreads broker</div>
-        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
-
-        <div class="hm-lbl p2">most trusted forex broker</div>
-        <div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div><div class="hm-cell hm-e">—</div>
-
-        <div class="hm-lbl p2">low min deposit CFD</div>
-        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
-
-        <div class="hm-lbl p2">ASIC regulated brokers</div>
-        <div class="hm-cell hm-y">Y</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
-
-        <div class="hm-lbl p2">best broker for scalping</div>
-        <div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div><div class="hm-cell hm-n">N</div>
-      </div>
-
-      <div style="display:flex; gap:20px; margin-top:1rem; padding-top:1rem; border-top:0.5px solid var(--border);">
-        <span style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text3);">
-          <span style="width:10px; height:10px; border-radius:2px; background:rgba(74,222,128,0.15); border:0.5px solid var(--green);"></span> 被引用
-        </span>
-        <span style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text3);">
-          <span style="width:10px; height:10px; border-radius:2px; background:rgba(248,113,113,0.12); border:0.5px solid var(--red);"></span> 未引用
-        </span>
-        <span style="display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text3);">
-          <span style="width:10px; height:10px; border-radius:2px; background:var(--surface3);"></span> 未测试
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Panel: Detail -->
-  <div id="p-detail" class="panel">
-    <div class="filter-row">
-      <span class="f-label">优先级</span>
-      <select class="f-select" id="f-pri" onchange="filterQ()">
-        <option value="all">全部</option>
-        <option value="P0">P0</option>
-        <option value="P1">P1</option>
-        <option value="P2">P2</option>
-      </select>
-      <span class="f-label">平台</span>
-      <select class="f-select" id="f-plat" onchange="filterQ()">
-        <option value="all">全部</option>
-        <option value="ChatGPT">ChatGPT</option>
-        <option value="Perplexity">Perplexity</option>
-        <option value="Gemini">Gemini</option>
-      </select>
-      <span class="f-label">引用</span>
-      <select class="f-select" id="f-cited" onchange="filterQ()">
-        <option value="all">全部</option>
-        <option value="Y">被引用</option>
-        <option value="N">未引用</option>
-      </select>
-    </div>
-    <div class="card" style="padding:0; overflow:hidden;">
-      <table class="q-table">
-        <thead>
-          <tr>
-            <th style="padding-left:1rem;">问题</th>
-            <th>优先级</th>
-            <th>平台</th>
-            <th>引用</th>
-            <th>情感</th>
-            <th style="padding-right:1rem;">备注</th>
-          </tr>
-        </thead>
-        <tbody id="q-tbody" style="background:var(--surface);"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Panel: Sources -->
-  <div id="p-sources" class="panel">
-    <div class="g2">
-      <div class="card">
-        <div class="card-head">高频引用域名 <span class="card-head-tag">出现次数</span></div>
-        <div class="src-row">
-          <div class="src-domain">investing.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:72px;"></div>
-            <div class="src-count">9×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">wikifx.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:56px; background:var(--red);"></div>
-            <div class="src-count">7×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">zeromarkets.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:40px; background:var(--green);"></div>
-            <div class="src-count">5×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">fxscouts.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:40px;"></div>
-            <div class="src-count">5×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">tradersunion.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:32px;"></div>
-            <div class="src-count">4×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">myfxbook.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:32px;"></div>
-            <div class="src-count">4×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">fxranking.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:24px;"></div>
-            <div class="src-count">3×</div>
-          </div>
-        </div>
-        <div class="src-row">
-          <div class="src-domain">trustpilot.com</div>
-          <div class="src-count-wrap">
-            <div class="src-bar" style="width:24px; background:var(--red);"></div>
-            <div class="src-count">3×</div>
-          </div>
-        </div>
-        <div style="margin-top:10px; padding-top:10px; border-top:0.5px solid var(--border); font-size:10px; color:var(--text3);">
-          <span style="color:var(--green);">■</span> 官网 5× 被引用 · 自有内容生效 ✓<br>
-          <span style="color:var(--red);">■</span> 红色 = 含负面评价，需重点跟进
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">需重点跟进域名</div>
-
-        <div class="watch-item">
-          <div class="watch-domain">wikifx.com</div>
-          <div class="watch-desc">多条负面评价 · 韩国客户出金投诉 · 评分过低</div>
-          <span class="watch-status ws-warn">邮件沟通中</span>
-          <span class="watch-status ws-ok" style="margin-left:4px;">部分已删除</span>
-        </div>
-        <div class="watch-item">
-          <div class="watch-domain">trustpilot.com</div>
-          <div class="watch-desc">大量负面用户评价 · 需补充高质量好评稀释</div>
-          <span class="watch-status ws-err">待处理</span>
-        </div>
-        <div class="watch-item">
-          <div class="watch-domain">brokerchooser.com</div>
-          <div class="watch-desc">标注"不受顶级监管" · 文章为竞品引流</div>
-          <span class="watch-status ws-ok">已删除</span>
-        </div>
-        <div class="watch-item">
-          <div class="watch-domain">forexpeacearmy.com</div>
-          <div class="watch-desc">2条差评（2023–24） · 申请商业合作重置中</div>
-          <span class="watch-status ws-info">FPA 申诉进行中</span>
-        </div>
-        <div class="watch-item">
-          <div class="watch-domain">newyorkcityservers.com</div>
-          <div class="watch-desc">Security 与 CFD 业务混淆 · 信息误导</div>
-          <span class="watch-status ws-warn">跟进删除中</span>
-        </div>
-      </div>
-    </div>
+  <div class="callout callout-amber">
+    <strong>Query fan-out implication (from skill):</strong> When someone asks "best forex broker for beginners" — the AI simultaneously fans out to related queries: low spreads, low deposit, ASIC regulated, withdrawal speed, MT4. ZERO needs to cover the full topical cluster, not just the head term. Right now we cover 4 of the ~10 fan-out variants.
   </div>
 
 </div>
 
+<!-- ══════════════════════════════════════════════ TAB 2: STRUCTURE -->
+<div class="content-area" id="tab-structure">
+
+  <div class="section-eyebrow">Pillar 1</div>
+  <h2>Structure — make content extractable</h2>
+  <p class="section-lead">AI systems extract passages, not pages. Every key claim should work as a standalone statement. The skill specifies 40–60 word answer blocks as the optimal extraction size.</p>
+
+  <div class="callout callout-teal">
+    <strong>Skill rule:</strong> Lead every section with a direct answer. Don't bury the conclusion. 40–60 words is the sweet spot for AI snippet extraction. Tables beat prose for comparison. Numbered lists beat paragraphs for process. Each paragraph: one idea.
+  </div>
+
+  <h3>Content block patterns — ZERO examples</h3>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-title">Definition block — "What is X?" queries</span>
+        <span class="pattern-cite">45 words</span>
+      </div>
+      <div class="pattern-body">
+<span class="highlight">ZERO Markets is a multi-regulated forex and CFD broker</span> <span class="comment">← answer first</span>
+<span class="highlight">licensed by ASIC (Australia), FMA (New Zealand),</span>
+<span class="highlight">and FSC (Mauritius).</span> <span class="comment">← regulatory proof immediately</span>
+<span class="highlight">It offers raw ECN spreads from 0.0 pips</span>
+<span class="highlight">on forex, indices, and commodities</span>
+<span class="highlight">via MT4, MT5, and the ZEROx platform.</span>
+<span class="comment">← specific, extractable facts</span></div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-title">Comparison block — "X vs Y" queries</span>
+        <span class="pattern-cite">50 words</span>
+      </div>
+      <div class="pattern-body">
+<span class="highlight">ZERO Markets vs Pepperstone: key differences</span>
+<span class="highlight">ZERO Markets is regulated by ASIC + FMA + FSC.</span> <span class="comment">← structured lead</span>
+<span class="highlight">Pepperstone is regulated by ASIC + FCA + CySEC.</span>
+<span class="highlight">Both offer raw ECN spreads from 0.0 pips.</span>
+<span class="highlight">ZERO's minimum deposit: [X]. Pepperstone: $200.</span>
+<span class="comment">← parallel structure — AI extracts this cleanly</span></div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-title">FAQ block — "Is X safe?" queries</span>
+        <span class="pattern-cite">55 words</span>
+      </div>
+      <div class="pattern-body">
+<span class="highlight">Q: Is ZERO Markets safe?</span>
+<span class="highlight">A: Yes. ZERO Markets is regulated by ASIC</span> <span class="comment">← direct answer first</span>
+<span class="highlight">(Licence No. [X]), which requires client funds</span>
+<span class="highlight">to be held in segregated accounts with</span>
+<span class="highlight">tier-1 banks. ASIC's oversight includes</span>
+<span class="highlight">mandatory dispute resolution and</span>
+<span class="highlight">negative balance protection.</span>
+<span class="comment">← specific, verifiable, citable</span></div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-title">Statistic block — authority signal</span>
+        <span class="pattern-cite">40 words</span>
+      </div>
+      <div class="pattern-body">
+<span class="highlight">ZERO Markets processes [X]% of withdrawals</span> <span class="comment">← specific stat</span>
+<span class="highlight">within 1 business day, based on internal</span>
+<span class="highlight">processing data (Q1 2026).</span> <span class="comment">← source + date = +40% visibility</span>
+<span class="highlight">The industry average is 2–3 business days</span>
+<span class="highlight">according to Finance Magnates (2025).</span>
+<span class="comment">← external citation = +37% more boost</span></div>
+    </div>
+  </div>
+
+  <h3>Content types that get cited most (skill data)</h3>
+  <table class="action-table">
+    <tr>
+      <th>Content type</th>
+      <th>AI citation share</th>
+      <th>ZERO opportunity</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>Comparison articles</td>
+      <td>~33% of all citations</td>
+      <td>ZERO vs Pepperstone, IC Markets, CMC, FP Markets</td>
+      <td><span class="badge badge-todo">Missing</span></td>
+    </tr>
+    <tr>
+      <td>Definitive guides</td>
+      <td>~15%</td>
+      <td>"Complete guide to forex trading under ASIC regulation"</td>
+      <td><span class="badge badge-todo">Missing</span></td>
+    </tr>
+    <tr>
+      <td>Original research/data</td>
+      <td>~12%</td>
+      <td>ZERO's own trading data, execution stats, client stats</td>
+      <td><span class="badge badge-todo">Missing</span></td>
+    </tr>
+    <tr>
+      <td>Best-of / listicles</td>
+      <td>~10%</td>
+      <td>"Best ASIC regulated brokers 2026" — ZERO authored</td>
+      <td><span class="badge badge-todo">Missing</span></td>
+    </tr>
+    <tr>
+      <td>Product/account pages</td>
+      <td>~10%</td>
+      <td>Accounts page needs extractable spec blocks</td>
+      <td><span class="badge badge-wip">Partial</span></td>
+    </tr>
+    <tr>
+      <td>FAQ pages</td>
+      <td>~8%</td>
+      <td>FAQ schema deployed — answers need to be ≤150 words each</td>
+      <td><span class="badge badge-wip">In progress</span></td>
+    </tr>
+  </table>
+
+  <h3>Structural checklist — apply to every priority page</h3>
+  <table class="action-table">
+    <tr>
+      <th style="width:60%">Check</th>
+      <th>Key pages</th>
+      <th>ZERO status</th>
+    </tr>
+    <tr><td>Direct answer in first 50 words of every section</td><td>All</td><td><span class="badge badge-todo">Fix needed</span></td></tr>
+    <tr><td>Answer blocks 40–60 words, self-contained</td><td>All</td><td><span class="badge badge-todo">Fix needed</span></td></tr>
+    <tr><td>H2/H3 headings match how users phrase queries</td><td>All</td><td><span class="badge badge-wip">Partial</span></td></tr>
+    <tr><td>Comparison tables for competitor queries</td><td>Accounts, Blog</td><td><span class="badge badge-todo">Missing</span></td></tr>
+    <tr><td>Numbered lists for process content</td><td>Guides, FAQ</td><td><span class="badge badge-wip">Partial</span></td></tr>
+    <tr><td>Statistics with cited sources + dates</td><td>All</td><td><span class="badge badge-todo">Missing</span></td></tr>
+    <tr><td>Last updated date visible on all content</td><td>Blog, FAQ, Product pages</td><td><span class="badge badge-todo">Missing</span></td></tr>
+    <tr><td>Schema markup (FAQ, Organization, FinancialService)</td><td>Homepage, FAQ, Accounts</td><td><span class="badge badge-wip">Deploying</span></td></tr>
+  </table>
+
+  <div class="callout callout-amber">
+    <strong>Google vs non-Google note (from skill):</strong> Google says don't chunk content artificially. The 40–60 word structure is <em>not</em> for Google — it's for ChatGPT, Perplexity, Claude, Copilot. Good news: clear paragraphs with direct answers don't hurt Google either. They're just good writing.
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 3: AUTHORITY -->
+<div class="content-area" id="tab-authority">
+
+  <div class="section-eyebrow">Pillar 2</div>
+  <h2>Authority — make content citable</h2>
+  <p class="section-lead">AI systems prefer sources they can trust. Princeton GEO research (KDD 2024, Perplexity.ai) ranked 9 optimisation methods by visibility boost. Applied to ZERO below.</p>
+
+  <div class="research-block">
+    <div class="r-label">Princeton GEO Study · KDD 2024 · Perplexity.ai</div>
+    <div class="r-title">9 methods ranked by AI citation visibility boost</div>
+    <div class="boost-grid">
+      <div class="boost-card">
+        <div class="b-pct">+40%</div>
+        <div class="b-method">Cite sources</div>
+        <div class="b-zero">Add authoritative references to regulatory bodies, Finance Magnates, ASIC reports</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">+37%</div>
+        <div class="b-method">Add statistics</div>
+        <div class="b-zero">Include ZERO's own trading data — execution speed, withdrawal times, client numbers</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">+30%</div>
+        <div class="b-method">Expert quotations</div>
+        <div class="b-zero">Named ZERO analysts with credentials quoting market conditions and product rationale</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">+25%</div>
+        <div class="b-method">Authoritative tone</div>
+        <div class="b-zero">Write with demonstrated expertise. "ASIC requires..." not "we believe..."</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">+20%</div>
+        <div class="b-method">Clarity</div>
+        <div class="b-zero">Simplify regulatory jargon. AI cites what it can extract cleanly.</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">+18%</div>
+        <div class="b-method">Technical terms</div>
+        <div class="b-zero">ECN, spread, pip, leverage ratio, margin call — use domain terminology correctly</div>
+      </div>
+      <div class="boost-card">
+        <div class="b-pct">-10%</div>
+        <div class="b-method">Keyword stuffing</div>
+        <div class="b-zero">Actively hurts AI visibility. Remove repeated keyword cramming from product pages</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:16px">Best combo: Fluency + Statistics. Low-authority sites see up to +115% with citations added.</div>
+  </div>
+
+  <h3>E-E-A-T applied to ZERO</h3>
+  <table class="action-table">
+    <tr><th>Dimension</th><th>What AI looks for</th><th>ZERO's asset</th><th>Action needed</th></tr>
+    <tr>
+      <td><strong>Experience</strong></td>
+      <td>First-hand, specific detail. Not generic.</td>
+      <td>Real trading infrastructure, real client data</td>
+      <td>Publish execution stats, processing times from actual data</td>
+    </tr>
+    <tr>
+      <td><strong>Expertise</strong></td>
+      <td>Author credentials, professional knowledge</td>
+      <td>Analysts and trading specialists on team</td>
+      <td>Create named author pages with credentials, publish bylined content</td>
+    </tr>
+    <tr>
+      <td><strong>Authoritativeness</strong></td>
+      <td>External citations, Wikipedia, industry mentions</td>
+      <td>ASIC/FMA/FSC licences — rare in market</td>
+      <td>Get licence numbers cited on Wikipedia, Investopedia, FPA</td>
+    </tr>
+    <tr>
+      <td><strong>Trustworthiness</strong></td>
+      <td>Transparency, sourced data, no misleading claims</td>
+      <td>Multi-regulated status</td>
+      <td>Show regulatory verification links on every page, dated "last updated" labels</td>
+    </tr>
+  </table>
+
+  <h3>Freshness signals — critical for ZERO</h3>
+  <div class="callout callout-red">
+    <strong>Current problem:</strong> Our May 2025 testing round found "information outdated" as a note on Minimum deposit (Perplexity), Withdrawal speed (Gemini), and Commissions (Gemini). AI systems weight recency. Undated content loses to dated content.
+  </div>
+  <table class="action-table">
+    <tr><th>Action</th><th>Page</th><th>Priority</th></tr>
+    <tr><td>Add "Last updated: [Month Year]" to all product/FAQ pages</td><td>All</td><td><span class="pill pill-p0">P0</span></td></tr>
+    <tr><td>Update withdrawal time information to reflect current processing</td><td>/faq, /funding</td><td><span class="pill pill-p0">P0</span></td></tr>
+    <tr><td>Update minimum deposit figures (confirm with ops team)</td><td>/accounts</td><td><span class="pill pill-p0">P0</span></td></tr>
+    <tr><td>Quarterly content refresh cadence for all core pages</td><td>All</td><td><span class="pill pill-p1">P1</span></td></tr>
+    <tr><td>Add year references to statistics ("as of Q1 2026")</td><td>Blog, FAQ</td><td><span class="pill pill-p1">P1</span></td></tr>
+  </table>
+
+  <h3>/pricing.md — new file needed</h3>
+  <div class="callout callout-purple">
+    <strong>From the skill:</strong> AI agents evaluating products on behalf of buyers can't parse JavaScript-rendered pricing or "contact sales" walls. A simple <code>/pricing.md</code> file makes ZERO's account specifications machine-readable for AI agents. Same principle as <code>llms.txt</code>.
+  </div>
+  <div class="code-block">
+    <div class="code-header"><span class="code-title">zeromarkets.com/pricing.md</span><span>deploy alongside llms.txt</span></div>
+    <pre><span class="c-comment"># ZERO Markets — Account Types & Pricing</span>
+<span class="c-comment"># Last updated: June 2026</span>
+
+<span class="c-key">## Standard Account</span>
+- Commission: <span class="c-val">$0 (commission-free)</span>
+- Spreads from: <span class="c-val">1.0 pip on EUR/USD</span>
+- Minimum deposit: <span class="c-val">[confirm with ops]</span>
+- Platforms: <span class="c-val">MT4, MT5, ZEROx</span>
+- Leverage (AU): <span class="c-val">up to 1:30 (ASIC regulated)</span>
+- Leverage (NZ): <span class="c-val">up to 1:200 (FMA regulated)</span>
+
+<span class="c-key">## Standard+ Account</span>
+- Commission: <span class="c-val">[X] per lot</span>
+- Spreads from: <span class="c-val">0.0 pips on EUR/USD</span>
+- Minimum deposit: <span class="c-val">[confirm with ops]</span>
+- Platforms: <span class="c-val">MT4, MT5, ZEROx</span>
+
+<span class="c-key">## Raw Account</span>
+- Commission: <span class="c-val">[X] per lot</span>
+- Spreads from: <span class="c-val">0.0 pips raw ECN</span>
+- Minimum deposit: <span class="c-val">[confirm with ops]</span>
+- Suitable for: <span class="c-val">scalpers, algorithmic trading, high-frequency traders</span>
+- Platforms: <span class="c-val">MT4, MT5</span>
+
+<span class="c-key">## Islamic (Swap-Free) Account</span>
+- Swap fees: <span class="c-val">None — halal compliant</span>
+- Available on: <span class="c-val">Standard, Standard+, Raw</span>
+- Application: <span class="c-val">contact support after registration</span>
+
+<span class="c-comment"># Regulation</span>
+- Australia: <span class="c-val">ASIC (Licence No. [X])</span>
+- New Zealand: <span class="c-val">FMA (FSP No. [X])</span>
+- Mauritius: <span class="c-val">FSC</span>
+
+<span class="c-comment"># Contact</span>
+- Support: <span class="c-val">support@zeromarkets.com</span>
+- Full pricing: <span class="c-val">https://www.zeromarkets.com/accounts</span></pre>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 4: PRESENCE -->
+<div class="content-area" id="tab-presence">
+
+  <div class="section-eyebrow">Pillar 3</div>
+  <h2>Presence — be where AI looks</h2>
+  <p class="section-lead">The skill's most important finding: brands are 6.5× more likely to be cited via third-party sources than their own domains. Wikipedia accounts for 7.8% of all ChatGPT citations. ZERO's third-party presence is where the real GEO battle is.</p>
+
+  <div class="presence-grid">
+    <div class="presence-card">
+      <div class="pc-domain">investing.com</div>
+      <div class="pc-share" style="color:var(--teal)">9×</div>
+      <div class="pc-why">Highest citation frequency in ZERO's test round. Positive or neutral broker comparison content.</div>
+      <div class="pc-zero" style="background:var(--teal-pale);color:var(--teal)">✓ Already appearing — protect and expand this coverage</div>
+    </div>
+    <div class="presence-card">
+      <div class="pc-domain">wikifx.com</div>
+      <div class="pc-share" style="color:var(--red)">7×</div>
+      <div class="pc-why">Second highest citation rate. Contains negative Korean client withdrawal complaints and low scores.</div>
+      <div class="pc-zero" style="background:var(--red-pale);color:var(--red)">⚠ Deletion emails sent. Partial removal confirmed. Follow up actively.</div>
+    </div>
+    <div class="presence-card">
+      <div class="pc-domain">fxscouts.com</div>
+      <div class="pc-share" style="color:var(--teal)">5×</div>
+      <div class="pc-why">Independent forex broker review site. Content here feeds multiple AI engines.</div>
+      <div class="pc-zero" style="background:var(--teal-pale);color:var(--teal)">✓ Appearing — request review update with current data</div>
+    </div>
+    <div class="presence-card">
+      <div class="pc-domain">tradersunion.com</div>
+      <div class="pc-share" style="color:var(--teal)">4×</div>
+      <div class="pc-why">Forex broker comparison and rating platform. High AI citation rate for broker queries.</div>
+      <div class="pc-zero" style="background:var(--gold-pale);color:var(--gold)">→ Check current rating, request update if outdated</div>
+    </div>
+    <div class="presence-card">
+      <div class="pc-domain">trustpilot.com</div>
+      <div class="pc-share" style="color:var(--red)">3×</div>
+      <div class="pc-why">AI models cite Trustpilot for trust signals. High negative review volume is suppressing sentiment.</div>
+      <div class="pc-zero" style="background:var(--red-pale);color:var(--red)">⚠ Pending — seed high-quality positive reviews to dilute negatives</div>
+    </div>
+    <div class="presence-card">
+      <div class="pc-domain">forexpeacearmy.com</div>
+      <div class="pc-share" style="color:var(--gold)">Spot</div>
+      <div class="pc-why">2 complaints (2023–24) appearing in "vs Pepperstone" query on Perplexity.</div>
+      <div class="pc-zero" style="background:var(--gold-pale);color:var(--gold)">→ FPA business partnership appeal in progress</div>
+    </div>
+  </div>
+
+  <h3>Third-party sources to build — skill recommendations</h3>
+  <table class="action-table">
+    <tr><th>Platform</th><th>Why AI cites it</th><th>Action for ZERO</th><th>Priority</th></tr>
+    <tr>
+      <td>Wikipedia</td>
+      <td>7.8% of all ChatGPT citations. Highest-trust source for AI.</td>
+      <td>Create/expand ZERO Markets Wikipedia entry. Include licence numbers, founding year, markets served.</td>
+      <td><span class="pill pill-p0">P0</span></td>
+    </tr>
+    <tr>
+      <td>Investopedia</td>
+      <td>Highest-authority financial education site. Frequently cited for broker queries.</td>
+      <td>Pitch Investopedia for broker review / mention in "best ASIC brokers" articles</td>
+      <td><span class="pill pill-p0">P0</span></td>
+    </tr>
+    <tr>
+      <td>Reddit (r/Forex, r/algotrading)</td>
+      <td>1.8% of ChatGPT citations. AI cites real user discussion as social proof.</td>
+      <td>Authentic participation only — answer questions where ZERO is genuinely relevant. No astroturfing.</td>
+      <td><span class="pill pill-p1">P1</span></td>
+    </tr>
+    <tr>
+      <td>Myfxbook.com</td>
+      <td>4× citations in test round. Performance verification platform.</td>
+      <td>Ensure ZERO's myfxbook profile is current and accurate</td>
+      <td><span class="pill pill-p1">P1</span></td>
+    </tr>
+    <tr>
+      <td>YouTube</td>
+      <td>Frequently cited by Google AI Overviews. Video content is underexplored.</td>
+      <td>Produce 3–5 educational videos on ASIC regulation, raw spreads, scalping — optimised titles</td>
+      <td><span class="pill pill-p1">P1</span></td>
+    </tr>
+    <tr>
+      <td>Finance Magnates</td>
+      <td>Industry authority for B2B and consumer forex content</td>
+      <td>Pitch press releases and contributed content from ZERO analysts</td>
+      <td><span class="pill pill-p2">P2</span></td>
+    </tr>
+  </table>
+
+  <div class="callout callout-teal">
+    <strong>P2 gap solution — comparison articles:</strong> Comparison articles are the #1 cited content type (33% of AI citations). "ZERO Markets vs Pepperstone", "ZERO Markets vs IC Markets", "best ASIC brokers 2026" — these don't even need to be on our own domain. Getting them placed on fxscouts.com, tradersunion.com, or BrokerChooser (positive version) could close 3–4 P2 gaps faster than writing them ourselves.
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 5: BOTS -->
+<div class="content-area" id="tab-bots">
+
+  <div class="section-eyebrow">Technical</div>
+  <h2>AI Bot Access<br>robots.txt configuration</h2>
+  <p class="section-lead">If you block an AI crawler's bot, that platform cannot cite you. The skill lists the exact bot names for each platform. ZERO's current robots.txt has not been audited for AI bot access.</p>
+
+  <div class="callout callout-red">
+    <strong>Risk:</strong> Default or legacy robots.txt rules may inadvertently block GPTBot, ClaudeBot, or PerplexityBot. This would explain any gaps in P0 citation rates on specific platforms. Verify immediately.
+  </div>
+
+  <table class="action-table">
+    <tr><th>Bot name</th><th>Platform</th><th>Citation impact if blocked</th><th>Recommended setting</th></tr>
+    <tr><td><code>GPTBot</code></td><td>ChatGPT (OpenAI)</td><td>ChatGPT cannot cite zeromarkets.com</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>ChatGPT-User</code></td><td>ChatGPT browsing</td><td>ChatGPT live search cannot access pages</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>PerplexityBot</code></td><td>Perplexity</td><td>Perplexity cannot cite zeromarkets.com</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>ClaudeBot</code></td><td>Claude (Anthropic)</td><td>Claude search cannot access pages</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>anthropic-ai</code></td><td>Claude training</td><td>May affect Claude's knowledge of ZERO</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>Google-Extended</code></td><td>Gemini + AI Overviews</td><td>Gemini cannot use zeromarkets.com for AI answers</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>Bingbot</code></td><td>Microsoft Copilot</td><td>Copilot cannot cite zeromarkets.com</td><td><span class="badge badge-done">Allow</span></td></tr>
+    <tr><td><code>CCBot</code></td><td>Common Crawl (training only)</td><td>AI training data — not citation</td><td><span class="badge badge-na">Optional block</span></td></tr>
+  </table>
+
+  <h3>Recommended robots.txt configuration</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-title">robots.txt — recommended configuration</span><span>zeromarkets.com/robots.txt</span></div>
+    <pre><span class="c-comment"># Standard crawlers</span>
+<span class="c-key">User-agent: *</span>
+<span class="c-val">Allow: /</span>
+<span class="c-val">Disallow: /admin/</span>
+<span class="c-val">Disallow: /client-portal/</span>
+<span class="c-val">Disallow: /wp-admin/</span>
+
+<span class="c-comment"># AI search crawlers — explicitly allowed for citation</span>
+<span class="c-key">User-agent: GPTBot</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: ChatGPT-User</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: PerplexityBot</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: ClaudeBot</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: anthropic-ai</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: Google-Extended</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-key">User-agent: Bingbot</span>
+<span class="c-val">Allow: /</span>
+
+<span class="c-comment"># Optional: block training-only crawlers (won't affect citation)</span>
+<span class="c-comment"># User-agent: CCBot</span>
+<span class="c-comment"># Disallow: /</span>
+
+<span class="c-comment"># Sitemap</span>
+<span class="c-key">Sitemap:</span> <span class="c-val">https://www.zeromarkets.com/sitemap.xml</span></pre>
+  </div>
+
+  <div class="callout callout-teal">
+    <strong>IT ticket text:</strong> "Please update robots.txt to explicitly allow the following AI crawler user-agents: GPTBot, ChatGPT-User, PerplexityBot, ClaudeBot, anthropic-ai, Google-Extended. These are the search and citation bots used by ChatGPT, Perplexity, Claude, and Gemini. Blocking them means those platforms cannot cite our content in AI-generated answers. Attached is the recommended configuration."
+  </div>
+
+  <h3>Agentic access — future-proofing</h3>
+  <p>The skill flags that AI agents are increasingly acting as buyers — clicking, comparing, even transacting on behalf of users. Google's guide references the upcoming Universal Commerce Protocol (UCP). For ZERO, this means:</p>
+  <table class="action-table">
+    <tr><th>Requirement</th><th>Why it matters</th><th>ZERO action</th></tr>
+    <tr><td>Content visible without JavaScript</td><td>AI agents can't execute heavy JS frameworks</td><td>Ensure core product info (spreads, accounts, regulation) is in static HTML</td></tr>
+    <tr><td>Semantic HTML elements</td><td>Agents use accessibility tree: <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code></td><td>Dev audit of semantic markup on core pages</td></tr>
+    <tr><td>/pricing.md file</td><td>Machine-readable account specs for AI agents comparing brokers</td><td>Deploy alongside llms.txt <span class="pill pill-p0">P0</span></td></tr>
+  </table>
+
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 6: MONITOR -->
+<div class="content-area" id="tab-monitor">
+
+  <div class="section-eyebrow">Ongoing</div>
+  <h2>Monitoring AI Visibility</h2>
+  <p class="section-lead">You can't improve what you don't measure. The skill specifies: no AI-specific Search Console data exists — third-party tools are the only path for cross-platform citation tracking.</p>
+
+  <div class="callout callout-amber">
+    <strong>Search Console limitation (from skill):</strong> Google's guide is explicit — there is no AI-specific Search Console reporting. AI Overviews use core Search ranking, so standard Search Console metrics (Performance, Coverage, Core Web Vitals) are the only Google signal available. For ChatGPT/Perplexity/Gemini: use the tools below.
+  </div>
+
+  <h3>Recommended monitoring tools</h3>
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tc-name">Otterly AI</div>
+      <div class="tc-coverage">ChatGPT · Perplexity · Google AI Overviews</div>
+      <div class="tc-use">Share of AI voice tracking across main platforms. Best starting point.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tc-name">Peec AI</div>
+      <div class="tc-coverage">ChatGPT · Gemini · Perplexity · Claude · Copilot+</div>
+      <div class="tc-use">Most comprehensive multi-platform monitoring. Best for scale.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tc-name">ZipTie</div>
+      <div class="tc-coverage">Google AI Overviews · ChatGPT · Perplexity</div>
+      <div class="tc-use">Brand mention + sentiment tracking. Good for negative content detection.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tc-name">LLMrefs</div>
+      <div class="tc-coverage">ChatGPT · Perplexity · AI Overviews · Gemini</div>
+      <div class="tc-use">SEO keyword → AI visibility mapping. Useful for P2 gap tracking.</div>
+    </div>
+  </div>
+
+  <h3>What to track — metric framework</h3>
+  <table class="action-table">
+    <tr><th>Metric</th><th>What it measures</th><th>How to check</th><th>Frequency</th></tr>
+    <tr><td>P0 brand citation rate</td><td>% of brand-direct queries where ZERO is cited</td><td>Manual test · 7 P0 questions × 3 platforms</td><td>Monthly</td></tr>
+    <tr><td>P2 specialist citation rate</td><td>% of specialist queries where ZERO appears</td><td>Manual test · Otterly / LLMrefs</td><td>Monthly</td></tr>
+    <tr><td>Sentiment distribution</td><td>% positive / neutral / negative of AI descriptions</td><td>Manual review of AI outputs</td><td>Monthly</td></tr>
+    <tr><td>Negative domain exposure</td><td>How often WikiFX / Trustpilot negative content is cited alongside ZERO</td><td>ZipTie · Manual check</td><td>Weekly</td></tr>
+    <tr><td>Source attribution</td><td>Which ZERO pages are being cited (not just brand)</td><td>GA4 referral from Perplexity.ai, ChatGPT</td><td>Weekly</td></tr>
+    <tr><td>Third-party citation growth</td><td>Wikipedia, Investopedia, FPA mentions</td><td>Ahrefs · manual search</td><td>Monthly</td></tr>
+    <tr><td>Competitor share of AI voice</td><td>ZERO vs Pepperstone vs IC Markets in same queries</td><td>Otterly / Peec AI</td><td>Monthly</td></tr>
+  </table>
+
+  <h3>DIY monthly test (no tools required)</h3>
+  <table class="action-table">
+    <tr><th>#</th><th>Query to run</th><th>Platforms</th><th>Log</th></tr>
+    <tr><td>1</td><td>Is ZERO Markets regulated?</td><td>ChatGPT, Perplexity, Gemini</td><td>Cited? Sentiment? Source?</td></tr>
+    <tr><td>2</td><td>ZERO Markets fees and spreads</td><td>ChatGPT, Perplexity, Gemini</td><td>Cited? Outdated info?</td></tr>
+    <tr><td>3</td><td>best low spread forex broker Australia</td><td>ChatGPT, Perplexity, Gemini</td><td>ZERO in results?</td></tr>
+    <tr><td>4</td><td>best broker for scalping</td><td>ChatGPT, Perplexity, Gemini</td><td>ZERO in results?</td></tr>
+    <tr><td>5</td><td>ZERO Markets vs Pepperstone</td><td>ChatGPT, Perplexity, Gemini</td><td>Who wins? Source?</td></tr>
+    <tr><td>6</td><td>ASIC regulated forex brokers 2026</td><td>ChatGPT, Perplexity, Gemini</td><td>ZERO listed?</td></tr>
+    <tr><td>7</td><td>most trusted forex broker</td><td>ChatGPT, Perplexity, Gemini</td><td>New test — baseline</td></tr>
+  </table>
+  <p style="margin-top:12px">Log results in a spreadsheet. Track month-over-month. This is your Round 2 test framework — run it after Schema + llms.txt + robots.txt are deployed to measure impact.</p>
+
+</div>
+
+<!-- ══════════════════════════════════════════════ TAB 7: MISTAKES -->
+<div class="content-area" id="tab-mistakes">
+
+  <div class="section-eyebrow">What Not To Do</div>
+  <h2>Common mistakes<br>applied to ZERO</h2>
+  <p class="section-lead">The skill lists 12 mistakes that hurt AI visibility. Each mapped to ZERO's current situation — some we're already making, some we're at risk of making.</p>
+
+  <ul class="mistake-list">
+    <li class="mistake-item">
+      <span class="mistake-icon">🔴</span>
+      <div>
+        <div class="m-label">No structured data — we're missing this</div>
+        <div class="m-zero">Schema markup deploying now. Without it, AI can't parse our regulatory info or FAQ answers. Priority: Organization + FAQPage first.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🔴</span>
+      <div>
+        <div class="m-label">Potentially blocking AI bots in robots.txt</div>
+        <div class="m-zero">Not yet audited. If GPTBot or PerplexityBot are blocked, those platforms literally cannot cite us. Audit and fix immediately.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🔴</span>
+      <div>
+        <div class="m-label">No freshness signals — undated content</div>
+        <div class="m-zero">AI systems weight recency. Our testing found "outdated" notes on Minimum deposit and Withdrawal speed answers. Adding "Last updated" dates is a 1-hour fix.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟠</span>
+      <div>
+        <div class="m-label">Generic content without data — "We're the best"</div>
+        <div class="m-zero">Product pages use marketing language. AI cites specifics: "spreads from 0.0 pips on EUR/USD" not "ultra-competitive pricing". Audit and rewrite core pages.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟠</span>
+      <div>
+        <div class="m-label">Pricing behind JS / not machine-readable</div>
+        <div class="m-zero">AI agents comparing brokers on behalf of buyers can't parse our accounts page if it's JS-rendered. Deploy /pricing.md as a static, readable file.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟠</span>
+      <div>
+        <div class="m-label">Keyword stuffing on product pages</div>
+        <div class="m-zero">Princeton study: keyword stuffing actively reduces AI visibility by 10%. If product pages repeat "forex broker" / "CFD broker" excessively, clean it up.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟡</span>
+      <div>
+        <div class="m-label">Ignoring third-party presence</div>
+        <div class="m-zero">We may get more AI citations from a Investopedia mention than from our own blog. WikiFX at 7× citations vs zeromarkets.com at 5× proves this is already happening.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟡</span>
+      <div>
+        <div class="m-label">Not monitoring — no Round 2 test scheduled</div>
+        <div class="m-zero">May 2025 was Round 1. Without a regular monitoring cadence, we can't measure the impact of changes. Set up monthly DIY test or subscribe to Otterly/Peec AI.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟢</span>
+      <div>
+        <div class="m-label">Writing separate content "for AI" — we're not doing this</div>
+        <div class="m-zero">Good. Google's guide explicitly warns against this. Our strategy is structural optimisation of existing content, not AI-bait fragments.</div>
+      </div>
+    </li>
+    <li class="mistake-item">
+      <span class="mistake-icon">🟢</span>
+      <div>
+        <div class="m-label">Gating authoritative content — not a current issue</div>
+        <div class="m-zero">Core pages (regulation, accounts, FAQ) are public. AI can access them. Keep it this way — don't gate regulatory content behind sign-up walls.</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3>Priority fix order based on impact</h3>
+  <table class="action-table">
+    <tr><th>#</th><th>Fix</th><th>Effort</th><th>Impact</th><th>Owner</th></tr>
+    <tr><td>1</td><td>Audit + fix robots.txt for AI bots</td><td>30 min</td><td>Unblocks citation entirely</td><td>Dev</td></tr>
+    <tr><td>2</td><td>Deploy llms.txt (already generated)</td><td>5 min</td><td>Active guidance to AI crawlers</td><td>Dev</td></tr>
+    <tr><td>3</td><td>Add "Last updated" to all core pages</td><td>1 hour</td><td>+freshness signal, fixes outdated notes</td><td>Dev/Content</td></tr>
+    <tr><td>4</td><td>Deploy Organization + FAQPage schema</td><td>2–4 hours</td><td>Structured data for AI parsing</td><td>Dev</td></tr>
+    <tr><td>5</td><td>Deploy /pricing.md</td><td>30 min</td><td>Machine-readable for AI agents</td><td>Dev</td></tr>
+    <tr><td>6</td><td>Rewrite 3 P0 pages: inverted pyramid + 40–60w blocks</td><td>1 week</td><td>Neutral → Positive sentiment shift</td><td>Content</td></tr>
+    <tr><td>7</td><td>Produce 4 comparison articles (ZERO vs competitors)</td><td>3 weeks</td><td>Close P1/P2 citation gaps</td><td>Content</td></tr>
+    <tr><td>8</td><td>Wikipedia entry creation/update</td><td>2 days</td><td>7.8% of ChatGPT citations source type</td><td>Growth</td></tr>
+  </table>
+
+</div>
+
 <script>
-const DATA = [
-  {q:'Is ZERO regulated and safe?',p:'P0',pl:'ChatGPT',c:'Y',s:'中立',n:'监管信息不全'},
-  {q:'Is ZERO regulated and safe?',p:'P0',pl:'Perplexity',c:'Y',s:'中立',n:'brokerchooser负面已处理'},
-  {q:'Is ZERO regulated and safe?',p:'P0',pl:'Gemini',c:'Y',s:'中立',n:'部分信息过时'},
-  {q:'Commissions or fees?',p:'P0',pl:'ChatGPT',c:'Y',s:'中立',n:''},
-  {q:'Commissions or fees?',p:'P0',pl:'Perplexity',c:'Y',s:'中立',n:''},
-  {q:'Commissions or fees?',p:'P0',pl:'Gemini',c:'Y',s:'留空',n:'无有用信息'},
-  {q:'Minimum deposit',p:'P0',pl:'ChatGPT',c:'Y',s:'中立',n:''},
-  {q:'Minimum deposit',p:'P0',pl:'Perplexity',c:'Y',s:'中立',n:'信息过时'},
-  {q:'Minimum deposit',p:'P0',pl:'Gemini',c:'Y',s:'中立',n:''},
-  {q:'Spreads and fees',p:'P0',pl:'ChatGPT',c:'Y',s:'中立',n:''},
-  {q:'Spreads and fees',p:'P0',pl:'Perplexity',c:'Y',s:'中立',n:'无有用信息'},
-  {q:'Spreads and fees',p:'P0',pl:'Gemini',c:'Y',s:'中立',n:''},
-  {q:'Client funds segregated?',p:'P0',pl:'ChatGPT',c:'—',s:'正面',n:'官网直接引用'},
-  {q:'Client funds segregated?',p:'P0',pl:'Perplexity',c:'—',s:'正面',n:'WikiFX负面已发删除邮件'},
-  {q:'Client funds segregated?',p:'P0',pl:'Gemini',c:'—',s:'正面',n:''},
-  {q:'Islamic account?',p:'P0',pl:'ChatGPT',c:'Y',s:'正面',n:'官网直接引用'},
-  {q:'Islamic account?',p:'P0',pl:'Perplexity',c:'Y',s:'正面',n:'竞品引用为主'},
-  {q:'Islamic account?',p:'P0',pl:'Gemini',c:'Y',s:'正面',n:''},
-  {q:'Withdrawal speed',p:'P0',pl:'ChatGPT',c:'Y',s:'中立',n:'竞品内容混入'},
-  {q:'Withdrawal speed',p:'P0',pl:'Perplexity',c:'Y',s:'中立',n:'无关链接为主'},
-  {q:'Withdrawal speed',p:'P0',pl:'Gemini',c:'Y',s:'中立',n:'信息已过时'},
-  {q:'vs Pepperstone / IC Markets',p:'P1',pl:'ChatGPT',c:'Y',s:'中立',n:'对比文章少'},
-  {q:'vs Pepperstone / IC Markets',p:'P1',pl:'Perplexity',c:'Y',s:'中立',n:'FPA差评需处理'},
-  {q:'vs Pepperstone / IC Markets',p:'P1',pl:'Gemini',c:'Y',s:'中立',n:''},
-  {q:'vs CMC Markets',p:'P1',pl:'ChatGPT',c:'Y',s:'中立',n:'ZERO仅提及1次'},
-  {q:'vs CMC Markets',p:'P1',pl:'Perplexity',c:'—',s:'留空',n:'未测试'},
-  {q:'vs CMC Markets',p:'P1',pl:'Gemini',c:'—',s:'留空',n:'未测试'},
-  {q:'best low spreads broker',p:'P2',pl:'ChatGPT',c:'N',s:'留空',n:'需第三方对比软文'},
-  {q:'best low spreads broker',p:'P2',pl:'Perplexity',c:'N',s:'留空',n:''},
-  {q:'best low spreads broker',p:'P2',pl:'Gemini',c:'N',s:'留空',n:''},
-  {q:'most trusted forex broker',p:'P2',pl:'ChatGPT',c:'—',s:'留空',n:'未测试'},
-  {q:'most trusted forex broker',p:'P2',pl:'Perplexity',c:'—',s:'留空',n:'未测试'},
-  {q:'most trusted forex broker',p:'P2',pl:'Gemini',c:'—',s:'留空',n:'未测试'},
-  {q:'low min deposit CFD',p:'P2',pl:'ChatGPT',c:'N',s:'留空',n:'$100门槛偏高'},
-  {q:'low min deposit CFD',p:'P2',pl:'Perplexity',c:'N',s:'留空',n:''},
-  {q:'low min deposit CFD',p:'P2',pl:'Gemini',c:'N',s:'留空',n:''},
-  {q:'ASIC regulated brokers',p:'P2',pl:'ChatGPT',c:'Y',s:'正面',n:''},
-  {q:'ASIC regulated brokers',p:'P2',pl:'Perplexity',c:'N',s:'留空',n:''},
-  {q:'ASIC regulated brokers',p:'P2',pl:'Gemini',c:'N',s:'留空',n:''},
-  {q:'best broker for scalping',p:'P2',pl:'ChatGPT',c:'N',s:'留空',n:'需强化执行速度内容'},
-  {q:'best broker for scalping',p:'P2',pl:'Perplexity',c:'N',s:'留空',n:''},
-  {q:'best broker for scalping',p:'P2',pl:'Gemini',c:'N',s:'留空',n:''},
-];
-
-function citedBadge(c){
-  if(c==='Y') return '<span class="badge b-y">Y</span>';
-  if(c==='N') return '<span class="badge b-n">N</span>';
-  return '<span class="badge b-na">—</span>';
+function showTab(id) {
+  document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({top: document.querySelector('.top-nav').offsetTop, behavior: 'smooth'});
 }
-function sentBadge(s){
-  if(s==='正面') return '<span class="badge b-pos">正面</span>';
-  if(s==='中立') return '<span class="badge b-neu">中立</span>';
-  if(s==='负面') return '<span class="badge b-neg">负面</span>';
-  return '<span class="badge b-na">'+s+'</span>';
-}
-function priClass(p){
-  if(p==='P0') return 'p-p0';
-  if(p==='P1') return 'p-p1';
-  return 'p-p2';
-}
-
-function filterQ(){
-  const fp = document.getElementById('f-pri').value;
-  const fpl = document.getElementById('f-plat').value;
-  const fc = document.getElementById('f-cited').value;
-  const tbody = document.getElementById('q-tbody');
-  tbody.innerHTML = '';
-  DATA.filter(r=>{
-    if(fp!=='all' && r.p!==fp) return false;
-    if(fpl!=='all' && r.pl!==fpl) return false;
-    if(fc!=='all' && r.c!==fc) return false;
-    return true;
-  }).forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="td-q" style="padding-left:1rem;">${r.q}</td>
-      <td><span class="priority ${priClass(r.p)}">${r.p}</span></td>
-      <td style="color:var(--text2); font-family:'DM Mono',monospace; font-size:10px;">${r.pl}</td>
-      <td>${citedBadge(r.c)}</td>
-      <td>${sentBadge(r.s)}</td>
-      <td class="td-note" style="padding-right:1rem;">${r.n}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function switchTab(id){
-  document.querySelectorAll('.tab').forEach((t,i)=>{
-    const ids=['overview','heatmap','detail','sources'];
-    t.classList.toggle('active', ids[i]===id);
-  });
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('p-'+id).classList.add('active');
-  if(id==='detail') filterQ();
-}
-
-filterQ();
 </script>
 </body>
 </html>
